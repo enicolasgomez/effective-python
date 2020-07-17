@@ -179,4 +179,48 @@ print(x)
 # Item 17: Prefer defaultdict Over setdefault to
 # Handle Missing Items in Internal State
 
+visits = {
+ 'Mexico': {'Tulum', 'Puerto Vallarta'},
+ 'Japan': {'Hakone'},
+}
 
+visits.setdefault('France', set()).add('Arles') 
+
+#defaultdict class from the collections built-in module
+#simplifies this common use case by automatically storing a default
+#value when a key doesn’t exist
+
+from collections import defaultdict
+
+visits = defaultdict(set)
+visits['country123'].add('city123')
+print(visits)
+
+# Item 18: Know How to Construct Key-Dependent
+# Default Values with __missing__
+
+from collections import defaultdict
+
+def open_picture(profile_path):
+  try:
+    return open(profile_path, 'a+b')
+  except OSError:
+    print(f'Failed to open path {profile_path}')
+    raise
+
+#  implement the __missing__ special method 
+#  to add custom logic for handling missing keys
+
+class Pictures(dict):
+  def __missing__(self, key):
+    value = open_picture(key)
+    self[key] = value
+    return value
+
+pictures = {}
+path = 'profile_1234.png'
+
+pictures = Pictures()
+handle = pictures[path]
+handle.seek(0)
+image_data = handle.read()
