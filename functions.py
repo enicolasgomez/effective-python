@@ -104,3 +104,69 @@ def log(message, values):
 # Item 23: Provide Optional Behavior with
 # Keyword Arguments
 
+#Positional arguments must be specified before keyword arguments:
+
+def print_parameters(**kwargs):
+ for key, value in kwargs.items():
+ print(f'{key} = {value}')
+
+print_parameters(alpha=1.5, beta=9, gamma=4)
+
+#alpha = 1.5
+#beta = 9
+#gamma = 4
+
+#The first benefit is that keyword arguments make the function call
+# clearer to new readers of the code
+
+#The second benefit of keyword arguments is that they can have
+#default values specified in the function definition
+
+# Item 24: Use None and Docstrings to Specify Dynamic Default Arguments
+
+# A default argument value is evaluated only once per module, start up
+
+def log(message, when=datetime.now()): #same value
+ print(f'{when}: {message}')
+
+def log(message, when=None):
+    if when is None:
+        when = datetime.now()
+    print(f'{when}: {message}')
+
+#  odd behaviors for dynamic values (like {}, [], or datetime.now()).
+
+# Item 25: Enforce Clarity with Keyword-Only and Positional-Only Arguments
+
+def safe_division(number, divisor,
+ ignore_overflow,
+ ignore_zero_division): #confusing for the two last arguments
+
+ #Use keyword arguments
+
+ def safe_division_b(number, divisor,
+    ignore_overflow=False, # Changed
+    ignore_zero_division=False): # Changed
+
+#still unsafe
+
+def safe_division_c(number, divisor, *, # Changed
+ ignore_overflow=False,
+ ignore_zero_division=False):
+
+# The * symbol in the argument list indicates the end
+# of positional arguments and the beginning of keyword-only
+# arguments
+
+# Item 26: Define Function Decorators with
+# functools.wraps
+
+# A decorator has the ability to run additional code before
+# and after each call to a function it wraps
+
+
+# ✦ Decorators in Python are syntax to allow one function to modify
+# another function at runtime.
+# ✦ Using decorators can cause strange behaviors in tools that do introspection, such as debuggers.
+# ✦ Use the wraps decorator from the functools built-in module when
+# you define your own decorators to avoid issues.
